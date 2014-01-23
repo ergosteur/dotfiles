@@ -25,13 +25,13 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+Q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -40,10 +40,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+J move left
-bindsym $mod+Shift+K move down
-bindsym $mod+Shift+L move up
-bindsym $mod+Shift+colon move right
+#bindsym $mod+Shift+J move left
+#bindsym $mod+Shift+K move down
+#bindsym $mod+Shift+L move up
+#bindsym $mod+Shift+colon move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -134,10 +134,15 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
+# Switch keyboard layouts with alt-shift
+setxkbmap -layout us,ca -variant ,fr -option grp:alt_shift_toggle
+
+# Lock with Win-L
+bindsym $mod+l exec xscreensaver-command -lock
 
 # Volume controls https://faq.i3wm.org/question/125/how-to-change-the-systems-volume/
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 -- +1%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -- -1%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume $(pactl info | grep  "Default Sink:" | cut -d: -f2) -- +1%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume $(pactl info | grep  "Default Sink:" | cut -d: -f2) -- -1%
 bindsym XF86AudioMute exec --no-startup-id pactl list sinks | grep -q Mute:.no && pactl set-sink-mute 0 1 || pactl set-sink-mute 0 0
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -149,8 +154,18 @@ bar {
 # Run NetworkManager applet
 exec --no-startup-id nm-applet
 
-# Run ibus for keyboard layouts
-exec --no-startup-id ibus-daemon
-
 # Run Dropbox daemon
 exec --no-startup-id dropbox start
+
+# restore wallpaper
+exec --no-startup-id nitrogen --restore
+
+# start bluetooth
+#exec --no-startup-id blueman-applet
+
+# start gnome sound
+exec --no-startup-id gnome-sound-applet
+
+# start xscreensaver
+exec --no-startup-id xscreensaver
+
